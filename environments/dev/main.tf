@@ -8,6 +8,17 @@ locals {
   spoke_cluster_name = "fleetform-spoke-${random_string.suffix.result}"
 }
 
+# --- S3 Remote Backend ---
+terraform {
+  backend "s3" {
+    bucket  = "fleetform-tfstate-franklynux"
+    key     = "dev/terraform.tfstate"
+    region  = "us-east-1"
+    encrypt = true
+    profile = "franklynux"
+  }
+}
+
 resource "random_string" "suffix" {
   length  = 8
   special = false
@@ -52,6 +63,7 @@ module "hub_eks" {
   name                                     = local.hub_cluster_name
   kubernetes_version                       = "1.32"
   enable_cluster_creator_admin_permissions = true
+  endpoint_public_access = true
 
   vpc_id     = module.hub_vpc.vpc_id
   subnet_ids = module.hub_vpc.private_subnets
@@ -104,6 +116,7 @@ module "spoke_eks" {
   name                                     = local.spoke_cluster_name
   kubernetes_version                       = "1.32"
   enable_cluster_creator_admin_permissions = true
+  endpoint_public_access = true
 
   vpc_id     = module.spoke_vpc.vpc_id
   subnet_ids = module.spoke_vpc.private_subnets
