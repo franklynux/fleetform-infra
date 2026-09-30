@@ -15,17 +15,19 @@ from or has access to it.
 
 ## Structure
 
+```
 fleetform-infra/
 ├── environments/
-│ └── dev/
-│ ├── main.tf # hub + spoke module calls, S3 backend
-│ ├── outputs.tf
-│ └── variables.tf
+│   └── dev/
+│       ├── main.tf        # hub + spoke module calls, S3 backend
+│       ├── outputs.tf
+│       └── variables.tf
 └── modules/
-└── vpc/ # reusable VPC module — parameterized by name/CIDR
-├── main.tf
-├── outputs.tf
-└── variables.tf
+    └── vpc/               # reusable VPC module — parameterized by name/CIDR
+        ├── main.tf
+        ├── outputs.tf
+        └── variables.tf
+```
 
 
 The VPC module is called twice with different CIDRs (`10.0.0.0/16` for hub,
